@@ -22,7 +22,6 @@ exports.registerUser = async (req, res) => {
     lastName,
     email,
     password,
-    confirmPassword,
     storeName,
     storeDescription,
     phone,
@@ -32,7 +31,7 @@ exports.registerUser = async (req, res) => {
       .status(httpStatus.BAD_REQUEST)
       .json({ message: error.details[0].message });
     if(password !== confirmPassword) return res.status(httpStatus.PRECONDITION_FAILED).json({message: "password must match"})
-  let user = await User.findOne({ email });
+  let user = await User.findOne({ email: email.toLowerCase() });
   if (user)
     return res
       .status(httpStatus.CONFLICT)
@@ -43,9 +42,8 @@ exports.registerUser = async (req, res) => {
     _id: new mongoose.Types.ObjectId(),
     firstName,
     lastName,
-    email,
+    email: email.toLowerCase(),
     password : hash,
-    confirmPassword,
     storeName,
     storeDescription,
     phone,
@@ -74,7 +72,7 @@ exports.login = async(req, res) => {
     return res
       .status(httpStatus.BAD_REQUEST)
       .json({ message: error.details[0].message });
-   const user = await User.findOne({ email })
+   const user = await User.findOne({ email: email.toLowerCase() })
    if(user) {
     const very = await bcrypt.compare(password, user.password)
     if(very) {

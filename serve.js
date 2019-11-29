@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 //import Routes
 const userRoute = require('./routes/user')
+const itemRoute = require('./routes/item')
 
 //setup mongoose connection
 mongoose.connect('mongodb+srv://aloneroland:coreldrawx3@cluster0-kfx0w.mongodb.net/store', {
@@ -21,6 +22,7 @@ mongoose.connect('mongodb+srv://aloneroland:coreldrawx3@cluster0-kfx0w.mongodb.n
 //Routes
 app.get('/', (req, res) => res.send('Hello World!'))
 app.use('/api/user', userRoute)
+app.use('/api/item', itemRoute)
 
 
 const port = process.env.PORT || 3300
